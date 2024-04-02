@@ -64,34 +64,20 @@ def train_supervised(data):
     return X, rf, gnb
 
 def f24_analysis():
-    f24planes = pd.read_csv("flight24/data/full_data.csv")
-    
+    f24planes = pd.read_csv("data/f24/new_full_data.csv")
+    f24planes = f24planes[f24planes.columns[1:]]
     
     dropf24 = ["id", "icao_24bit", "registration", "flight_no", "airline_icao", "callsign", 'destination_airport_iata', 'origin_airport_iata', 'aircraft_code']
     # No encodable columns for small dataset
     encodef24 = []
     f24data = prep(f24planes, dropf24, encodef24, 'id')
 
-    f24data[['altitude', 'ground_speed', 'time', 'duration']] = normalize(f24data[['altitude', 'ground_speed', 'time', 'duration']])
+    f24data[['altitude', 'ground_speed', 'time']] = normalize(f24data[['altitude', 'ground_speed', 'time']])#, 'duration']])
     for d in range(3):
         f24data[f'deltaD{d+1}'] = normalize([f24data[f'deltaD{d+1}']])[0]
         f24data[f'turn{d+1}'] = normalize([f24data[f'turn{d+1}']])[0]
-    
-    traindata_full = pd.read_csv("old/anomalous.csv")
-    traindata, rf, gnb = train_supervised(traindata_full)
 
-    f24data = f24data[traindata.columns]
-    rf_pred = rf.predict(f24data)
-    gnb_pred = gnb.predict(f24data)
-
-    pd.concat([traindata_full, f24planes[traindata_full.columns]]).to_csv("new_full_data.csv")
-
-    predicted_anomalies = f24planes[gnb_pred]
-    print(len(predicted_anomalies))
-    print(predicted_anomalies)
-    # gnb_pred = gnb.predict(f24data)
-
-
+    #Unsupervised
     # f24planes = outlier_analysis(f24planes, f24data)
     # anomalous = f24planes[f24planes['anomalous'] == 1]
     # print(f"There are {len(anomalous)} anomalies")
@@ -100,9 +86,28 @@ def f24_analysis():
     # manual_anomalies = pd.read_csv("anomalous.csv")
     # false_positives = np.sum(planes["anomalous"] != manual_anomalies["anomalous"])
     # print(f"False positives: {false_positives/planes['anomalous'].sum()*100:.3f}%")
+    
+
+    #Supervised
+    # traindata_full = pd.read_csv("old/anomalous.csv")
+    traindata, rf, gnb = train_supervised(f24data)
+
+    f24data = f24data[traindata.columns]
+    rf_pred = rf.predict(f24data)
+    gnb_pred = gnb.predict(f24data)
+
+    # pd.concat([traindata_full, f24planes[traindata_full.columns]]).to_csv("new_full_data.csv")
+
+    predicted_anomalies = f24planes[np.bool_(gnb_pred)]
+    print(f"There are {len(predicted_anomalies)} outliers")
+    print(predicted_anomalies.head())
+    print("GNB confusion matrix")
+    print(confusion_matrix(f24planes['anomalous'], gnb_pred))
+    print("RF confusion matrix")
+    print(confusion_matrix(f24planes['anomalous'], rf_pred))
 
 def absd_analysis():
-    absd_planes = pd.read_csv("absd/data/filtered_absd20240401.csv")
+    absd_planes = pd.read_csv("data/absd/filtered_absd20240401.csv")
     drop_absd = ["plane_id", "flight_no", "squawk", "dbFlags", "plane_type", "longitude", "latitude"]
     encode_absd = ["type", "category"]
 
@@ -124,12 +129,13 @@ def absd_analysis():
     absd_planes = outlier_analysis(absd_planes, absd_data)
 
     outliers = absd_planes[absd_planes['anomalous'] == 1]
-    print(len(outliers))
-    outliers[['plane_id', 'anomalous']].to_csv('manual_review.csv')
+    print(f"There are {len(outliers)} outliers")
+    print(outliers.head())
+    # outliers[['plane_id', 'anomalous']].to_csv('manual_review.csv')
 
 if __name__ == "__main__":
-    absd_analysis()
-    # f24_analysis()
+    # absd_analysis()
+    f24_analysis()
 
     
    

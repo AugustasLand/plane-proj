@@ -1,4 +1,4 @@
-,id,icao_24bit,aircraft_code,registration,anomalous,origin_airport_iata,destination_airport_iata,number,airline_icao,callsign,turn1,turn2,turn3,deltaD1,deltaD2,deltaD3,time,latitude,longitude,altitude,ground_speed
+,id,icao_24bit,aircraft_code,registration,anomalous,origin_airport_iata,destination_airport_iata,flight_no,airline_icao,callsign,turn1,turn2,turn3,deltaD1,deltaD2,deltaD3,time,latitude,longitude,altitude,ground_speed
 0,345119eb,7583EB,B77W,RP-C7778,0,MNL,BER,PR1,PAL,PAL001,4.0,18.0,18.0,-429.863787,-414.3128255,-415.934497,19.0,58.755,26.87,38000.0,459.0
 1,3451d388,407D52,B744,G-UNET,0,MCT,LHR,HC311,HGO,HGO311,3.0,6.0,1.0,-443.4481375,-469.3598315,-478.2327305,19.2,48.01,15.77,34000.0,483.6
 2,3451e76b,,GLF5,,0,,,,,GLF5,9.0,8.0,3.0,0.0,0.0,0.0,21.6,39.92,7.48,36000.0,429.6

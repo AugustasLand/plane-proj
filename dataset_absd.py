@@ -32,4 +32,4 @@ for t in range(0, 60*24, 15):
     else:
         aircraft = pd.concat([aircraft, new_aircraft])
 
-aircraft.to_csv(f"absd_{date.replace('/', '')}.csv")
+aircraft.to_csv(f"data/absd/absd{date.replace('/', '')}.csv")

@@ -45,7 +45,7 @@ def get_data(df_flights=pd.DataFrame()):
     
         df_flights = pd.concat([df_flights, new_flights])
 
-    else: 
+    else:
         new_flights = new_flights[(new_flights['d_airport'] < 50) &
                                 new_flights['on_ground'] == False]
 
@@ -63,7 +63,7 @@ while datetime.now() < datetime(2024, 3, 24, 17, 45):
     sleep(15*60)
     df_flights = get_data(df_flights)
     end = datetime.now().strftime("%d_%H_%M")
-    df_flights.to_csv(f"flight_data_{start}_{end}.csv")
+    df_flights.to_csv(f"data/f24/flight_data_{start}_{end}.csv")
 
 
 # sched.add_job(get_data(df_flights), 'interval', hours=0.25, start_date=datetime.now(), end_date=datetime(2024, 3, 24, 17, 45))

@@ -144,24 +144,25 @@ def to_df(predf, colnames):
     
 
 if __name__ == "__main__":
-    # try:
-    #     t1 = np.float32(input("Please input decimal hour start time for flights of interest: "))
-    #     t2 = np.float32(input("Please input decimal hour end time for flights of interest: "))
-    # except:
-    #     t1 = 0
-    #     t2 = 0
-    # time = [t1, t2]
-    # try:
-    #     origin = np.float32(input("Please input center of region of interest (lat, lon separated by comma): ").split(','))
-    #     radius = np.float32(input("Please input radius in km of region of interest: "))
-    # except:
-    #     origin = 0
-    #     radius = 0
+    try:
+        t1 = np.float32(input("Please input decimal hour start time for flights of interest: "))
+        t2 = np.float32(input("Please input decimal hour end time for flights of interest: "))
+    except:
+        t1 = 0
+        t2 = 0
+    time = [t1, t2]
+    try:
+        origin = np.float32(input("Please input center of region of interest (lat, lon separated by comma): ").split(','))
+        radius = np.float32(input("Please input radius in km of region of interest: "))
+    except:
+        origin = 0
+        radius = 0
 
-    absd_data = pd.read_csv("absd/data/absd20240401.csv")
-    # print(f"Tracked airplane count absd: {len(absd_data['hex'].unique())}")
-    # print(f"Tracked flight count absd: {len(absd_data['flight_no'].unique())}")
-    # absd_data = get_subset(absd_data, 'hex', time, radius, origin)
+    absd_data = pd.read_csv("data/absd/absd20240401.csv")
+    absd_data = absd_data[absd_data.columns[1:]] # Remove index column
+    print(f"Tracked airplane count absd: {len(absd_data['hex'].unique())}")
+    print(f"Tracked flight count absd: {len(absd_data['flight_no'].unique())}")
+    absd_data = get_subset(absd_data, 'hex', time, radius, origin)
     absd_colnames = ["plane_id", "time", "type", "flight_no", "plane_type", "squawk", "category", "turn", "deltaD", "latitude",
                  "longitude", "altitude", "ground_speed", "signal_power", "dbFlags", "duration", "messages"]
     
